@@ -1,7 +1,8 @@
 #include <Arduino.h>
+#include "global.h"
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(SERIAL_SPEED);
   Serial.println("Test reussi !");
 }
 
