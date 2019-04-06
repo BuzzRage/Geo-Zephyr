@@ -13,7 +13,7 @@
 #endif
 
 #define SERIAL_SPEED 		      9600
-#define WEBSERVER_PORT		80
+#define WEBSERVER_PORT				80
 
 // Defines peripheral pins
 #define BME_SCK               //To complete
