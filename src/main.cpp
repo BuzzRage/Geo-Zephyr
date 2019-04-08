@@ -7,6 +7,7 @@ const char* ssid     = "";
 const char* password = "";
 
 WiFiServer server(WEBSERVER_PORT);
+Adafruit_BME680 bme;
 String header = "";
 
 void setup() {
@@ -24,43 +25,45 @@ void setup() {
   DEBUG_PRINTLN("IP address: ");
   DEBUG_PRINTLN(WiFi.localIP());
   server.begin();
+
+  initBme();
 }
 
 void loop() {
   delay(2000);
+  testBME();
+  WiFiClient client = server.available();
 
-  WiFiClient client = server.available();   // Listen for incoming clients
-
-  if (client) {                             // If a new client connects,
-    DEBUG_PRINTLN("New Client.");          // print a message out in the serial port
+  if(client){
+    DEBUG_PRINTLN("New Client.");
     String currentLine = "";                // make a String to hold incoming data from the client
-    while (client.connected()) {            // loop while the client's connected
-      if (client.available()) {             // if there's bytes to read from the client,
-        char c = client.read();             // read a byte, then
-        DEBUG_WRITE(c);                    // print it out the serial monitor
+    while(client.connected()){
+      if(client.available()){
+        char c = client.read();
+        DEBUG_WRITE(c);
         header += c;
-        if (c == '\n') {                    // if the byte is a newline character
+        if(c == '\n'){                    // if the byte is a newline character
           // if the current line is blank, you got two newline characters in a row.
           // that's the end of the client HTTP request, so send a response:
           if (currentLine.length() == 0) {
-            // HTTP headers always start with a response code (e.g. HTTP/1.1 200 OK)
-            // and a content-type so the client knows what's coming, then a blank line:
             client.println("HTTP/1.1 200 OK");
             client.println("Content-type:text/html");
             client.println("Connection: close");
             client.println();
 
-                        // Display the HTML web page
             client.println("<!DOCTYPE html><html>");
             //client.println("<head></head>");
 
             // Web Page Heading
             client.println("<body><h1>GeoZéphyr</h1>");
             client.println("<p>Bienvenu sur cette page !</p>");
+            client.println("<p>Il fait "+String(bme.temperature)+"°C</p>");
+            client.println("<p>La pression atmosphérique est de "+String(bme.pressure / 100.0)+"hPa ");
+            client.println("avec un taux de "+String(bme.humidity)+"%</p>");
+            client.println("<p>Gaz = "+String(bme.gas_resistance/1000)+"kOhms</p>");
             client.println("</body></html>");
             // The HTTP response ends with another blank line
             client.println();
-            // Break out of the while loop
             break;
           } else { // if you got a newline, then clear currentLine
             currentLine = "";
@@ -70,11 +73,53 @@ void loop() {
         }
       }
     }
-    // Clear the header variable
     header = "";
-    // Close the connection
     client.stop();
     DEBUG_PRINTLN("Client disconnected.");
     DEBUG_PRINTLN("");
   }
+}
+
+void initBme(){
+  Serial.println("Air quality sensor initialization.");
+
+  if (!bme.begin(I2C_ADDR)) {
+    Serial.println("Could not find a valid BME680 sensor, check wiring!");
+    while (1);
+  }
+  // Set up oversampling and filter initialization
+  bme.setTemperatureOversampling(BME680_OS_8X);
+  bme.setHumidityOversampling(BME680_OS_2X);
+  bme.setPressureOversampling(BME680_OS_4X);
+  bme.setIIRFilterSize(BME680_FILTER_SIZE_3);
+  bme.setGasHeater(320, 150); // 320*C for 150 ms
+}
+
+void testBME(){
+  if (! bme.performReading()) {
+   Serial.println("Failed to perform reading :(");
+   return;
+ }
+ Serial.print("Temperature = ");
+ Serial.print(bme.temperature);
+ Serial.println(" *C");
+
+ Serial.print("Pressure = ");
+ Serial.print(bme.pressure / 100.0);
+ Serial.println(" hPa");
+
+ Serial.print("Humidity = ");
+ Serial.print(bme.humidity);
+ Serial.println(" %");
+
+ Serial.print("Gas = ");
+ Serial.print(bme.gas_resistance / 1000.0);
+ Serial.println(" KOhms");
+
+ Serial.print("Approx. Altitude = ");
+ Serial.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
+ Serial.println(" m");
+
+ Serial.println();
+ delay(2000);
 }
