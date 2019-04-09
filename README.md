@@ -7,8 +7,8 @@ Contrôle de qualité de l'air Géo-localisée.
 - *GP-735T*: module GPS
 
 **Bibliothèques nécessaires**:
-`Adafruit_Sensor.h` [Adafruit_Sensor](https://github.com/adafruit/Adafruit_Sensor "Lien GitHub pour la Unified Sensor library")
-`Adafruit_BME680.h` [Adafruit_BME680](https://github.com/adafruit/Adafruit_BME680 "Lien GitHub pour le BME680")
+- `Adafruit_Sensor.h` [Adafruit_Sensor](https://github.com/adafruit/Adafruit_Sensor "Lien GitHub pour la Unified Sensor library")
+- `Adafruit_BME680.h` [Adafruit_BME680](https://github.com/adafruit/Adafruit_BME680 "Lien GitHub pour le BME680")
 
 **TODO**:
   - Tester/tuner *BME680*
