@@ -1,11 +1,6 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-#include <Wire.h>
-#include <SPI.h>
-#include <Adafruit_Sensor.h>
-#include <Adafruit_BME680.h>
-
 #define DEBUG_DISPLAY
 #ifdef DEBUG_DISPLAY
 	#define DEBUG_PRINTLN(a) 	Serial.println(a)
@@ -29,7 +24,5 @@
 
 #define SEALEVELPRESSURE_HPA  1013.25
 
-void initBme();
-void testBME();
 
 #endif

@@ -1,31 +1,22 @@
 #include <Arduino.h>
-#include <WiFi.h>
+#include <Adafruit_BME680.h>
+
 #include "global.h"
+#include "wifiHandler.h"
+//#include "airQHandler.h" // Not ready yet. Objectification needed
 
-// Enter your credentials here
-const char* ssid     = "";
-const char* password = "";
-
-WiFiServer server(WEBSERVER_PORT);
 Adafruit_BME680 bme;
+WiFiServer server(WEBSERVER_PORT);
 String header = "";
 
-void setup() {
+void initBme();
+void testBME();
+
+void setup(){
   Serial.begin(SERIAL_SPEED);
-  DEBUG_PRINT("Connecting to ");
-  DEBUG_PRINTLN(ssid);
-  WiFi.begin(ssid,password);
-  while(WiFi.status() != WL_CONNECTED){
-    delay(500);
-    Serial.print(".");
-  }
 
-  DEBUG_PRINT("");
-  DEBUG_PRINTLN("WiFi connected.");
-  DEBUG_PRINTLN("IP address: ");
-  DEBUG_PRINTLN(WiFi.localIP());
+  initWifi();
   server.begin();
-
   initBme();
 }
 
