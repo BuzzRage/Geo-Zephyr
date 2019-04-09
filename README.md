@@ -2,8 +2,9 @@
 Contrôle de qualité de l'air Géo-localisée.
 
 **Matériel utilisé**:
-- *Sparkfun ESP32 Thing* équipé d'un dual-core 32bits Xtensa (Tensilica)
+- *Sparkfun ESP32 Thing*: équipé d'un dual-core 32bits Xtensa (Tensilica)
 - *Adafruit BME680*: Capteur de température, d'humidité, de pression et de gaz
+- *GP-735T*: module GPS
 
 **Bibliothèques nécessaires**:
 `Adafruit_Sensor.h` [Adafruit_Sensor](https://github.com/adafruit/Adafruit_Sensor "Lien GitHub pour la Unified Sensor library")
