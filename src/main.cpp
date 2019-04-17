@@ -204,6 +204,8 @@ void testGPS(){
      Serial.print(" quality: "); Serial.println((int)GPS.fixquality);
      if (GPS.fix) {
        Serial.print("Location: ");
+       // GPS.latitude format: ddmm.mmmm
+       // GPS.longitude format: dddmm.mmm
        Serial.print(GPS.latitude, 4); Serial.print(GPS.lat);
        Serial.print(", ");
        Serial.print(GPS.longitude, 4); Serial.println(GPS.lon);
