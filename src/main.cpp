@@ -205,8 +205,10 @@ void testGPS(){
        Serial.print("Location: ");
        // GPS.latitude format: ddmm.mmmm
        // GPS.longitude format: dddmm.mmm
-       float latitude = GPS.latitude/100.0;
-       float longitude = GPS.longitude/100.0;
+       float correctifLat = 0.208903;
+       float correctiLng  = 0.307825;
+       float latitude = GPS.latitude/100.0 + correctifLat;
+       float longitude = GPS.longitude/100.0 + correctiLng;
        Serial.print(latitude, 6); Serial.print(GPS.lat);
        Serial.print(", ");
        Serial.print(longitude, 6); Serial.println(GPS.lon);
