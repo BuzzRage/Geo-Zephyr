@@ -163,7 +163,6 @@ void initGPS(){
 
   // Request updates on antenna status, comment out to keep quiet
   GPS.sendCommand(PGCMD_ANTENNA);
-
   delay(1000);
 
   // Ask for firmware version
@@ -192,23 +191,25 @@ void testGPS(){
    if (millis() - timer > 2000) {
      timer = millis(); // reset the timer
      Serial.print("\nTime: ");
-     Serial.print(GPS.hour, DEC); Serial.print(':');
+     Serial.print(GPS.hour+2, DEC); Serial.print(':');
      Serial.print(GPS.minute, DEC); Serial.print(':');
-     Serial.print(GPS.seconds, DEC); Serial.print('.');
-     Serial.println(GPS.milliseconds);
+     Serial.println(GPS.seconds, DEC); //Serial.print('.');
+     //Serial.println(GPS.milliseconds);
      Serial.print("Date: ");
      Serial.print(GPS.day, DEC); Serial.print('/');
      Serial.print(GPS.month, DEC); Serial.print("/20");
      Serial.println(GPS.year, DEC);
      Serial.print("Fix: "); Serial.print((int)GPS.fix);
      Serial.print(" quality: "); Serial.println((int)GPS.fixquality);
-     if (GPS.fix) {
+     if(GPS.fix){
        Serial.print("Location: ");
        // GPS.latitude format: ddmm.mmmm
        // GPS.longitude format: dddmm.mmm
-       Serial.print(GPS.latitude, 4); Serial.print(GPS.lat);
+       float latitude = GPS.latitude/100.0;
+       float longitude = GPS.longitude/100.0;
+       Serial.print(latitude, 6); Serial.print(GPS.lat);
        Serial.print(", ");
-       Serial.print(GPS.longitude, 4); Serial.println(GPS.lon);
+       Serial.print(longitude, 6); Serial.println(GPS.lon);
        Serial.print("Speed (knots): "); Serial.println(GPS.speed);
        Serial.print("Angle: "); Serial.println(GPS.angle);
        Serial.print("Altitude: "); Serial.println(GPS.altitude);
