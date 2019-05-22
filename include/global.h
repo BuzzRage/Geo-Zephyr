@@ -13,7 +13,7 @@
 #endif
 
 #define SERIAL_SPEED 		      9600
-//#define WIFI_ENABLED
+#define WIFI_ENABLED
 #ifdef WIFI_ENABLED
 	#define WEBSERVER_PORT				80
 #endif

@@ -24,10 +24,10 @@ uint32_t timer = millis();
 
 
 Adafruit_BME680 bme;
+
 #ifdef WIFI_ENABLED
-  WiFiServer server(WEBSERVER_PORT);
+    WebServer myServer("ssid","password");
 #endif
-String header = "";
 
 void initBme();
 void testBME();
@@ -38,8 +38,8 @@ void setup(){
   Serial.begin(SERIAL_SPEED);
 
   #ifdef WIFI_ENABLED
-    initWifi();
-    server.begin();
+    myServer.initWifi();
+    myServer.begin();
   #endif
   initBme();
   initGPS();
@@ -47,56 +47,22 @@ void setup(){
 
 void loop() {
   //delay(2000);
-  //testBME();
-  testGPS();
+  testBME();
+  //testGPS();
 
   #ifdef WIFI_ENABLED
-  WiFiClient client = server.available();
-
-  if(client){
-    DEBUG_PRINTLN("New Client.");
-    String currentLine = "";                // make a String to hold incoming data from the client
-    while(client.connected()){
-      if(client.available()){
-        char c = client.read();
-        DEBUG_WRITE(c);
-        header += c;
-        if(c == '\n'){                    // if the byte is a newline character
-          // if the current line is blank, you got two newline characters in a row.
-          // that's the end of the client HTTP request, so send a response:
-          if (currentLine.length() == 0) {
-            client.println("HTTP/1.1 200 OK");
-            client.println("Content-type:text/html");
-            client.println("Connection: close");
-            client.println();
-
-            client.println("<!DOCTYPE html><html>");
-            //client.println("<head></head>");
-
-            // Web Page Heading
-            client.println("<body><h1>GeoZéphyr</h1>");
-            client.println("<p>Bienvenu sur cette page !</p>");
-            client.println("<p>Il fait "+String(bme.temperature)+"°C</p>");
-            client.println("<p>La pression atmosphérique est de "+String(bme.pressure / 100.0)+"hPa ");
-            client.println("avec un taux de "+String(bme.humidity)+"%</p>");
-            client.println("<p>Gaz = "+String(bme.gas_resistance/1000)+"kOhms</p>");
-            client.println("</body></html>");
-            // The HTTP response ends with another blank line
-            client.println();
-            break;
-          } else { // if you got a newline, then clear currentLine
-            currentLine = "";
-          }
-        } else if (c != '\r') {  // if you got anything else but a carriage return character,
-          currentLine += c;      // add it to the end of the currentLine
-        }
-      }
-    }
-    header = "";
-    client.stop();
-    DEBUG_PRINTLN("Client disconnected.");
-    DEBUG_PRINTLN("");
-  }
+  String str = "<!DOCTYPE html><html> \
+  <head></head> \
+  <body> \
+    <h1>GeoZéphyr</h1> \
+    <p>Bienvenu sur cette page !</p> \
+    <p>Il fait "+String(bme.temperature)+"°C</p> \
+    <p>La pression atmosphérique est de "+String(bme.pressure / 100.0)+"hPa \
+       avec un taux de "+String(bme.humidity)+"%</p> \
+    <p>Gaz = "+String(bme.gas_resistance/1000)+"kOhms</p> \
+  </body> \
+  </html>";
+  myServer.run(str);
   #endif
 }
 
