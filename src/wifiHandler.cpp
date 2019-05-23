@@ -1,15 +1,15 @@
 #include "wifiHandler.h"
 
-WebServer::WebServer(){
+GZ_WebServer::GZ_WebServer(){
 
 }
 
-WebServer::WebServer(char* ssid, char* passwd){
+GZ_WebServer::GZ_WebServer(char* ssid, char* passwd){
   _ssid   = ssid;
   _passwd = passwd;
 }
 
-void WebServer::initWifi(){
+void GZ_WebServer::initWifi(){
   DEBUG_PRINT("Connecting to ");
   DEBUG_PRINTLN(_ssid);
   WiFi.begin(_ssid,_passwd);
@@ -24,11 +24,11 @@ void WebServer::initWifi(){
   DEBUG_PRINTLN(WiFi.localIP());
 }
 
-void WebServer::begin(){
+void GZ_WebServer::begin(){
   _server.begin(_port);
 }
 
-void WebServer::run(String str){
+void GZ_WebServer::run(String str){
   WiFiClient client = _server.available();
   String header = "";
   if(client){
@@ -68,26 +68,26 @@ void WebServer::run(String str){
   }
 }
 
-int WebServer::getPort(){
+int GZ_WebServer::getPort(){
   return this->_port;
 }
 
-void WebServer::setPort(int port){
+void GZ_WebServer::setPort(int port){
   this->_port = port;
 }
 
-char* WebServer::getSsid(){
+char* GZ_WebServer::getSsid(){
   return this->_ssid;
 }
 
-void WebServer::setSsid(char* ssid){
+void GZ_WebServer::setSsid(char* ssid){
   this->_ssid = ssid;
 }
 
-char* WebServer::getPasswd(){
+char* GZ_WebServer::getPasswd(){
   return this->_passwd;
 }
 
-void WebServer::setPasswd(char* passwd){
+void GZ_WebServer::setPasswd(char* passwd){
   this->_passwd = passwd;
 }

@@ -4,19 +4,19 @@
 #include <WiFi.h>
 #include "global.h"
 
-class WebServer{
+class GZ_WebServer{
   public:
     // Constructeurs
-    WebServer();
-    WebServer(char* ssid, char* passwd);
+    GZ_WebServer();
+    GZ_WebServer(char* ssid, char* passwd);
 
     // Accesseurs
-    int getPort();
-    void setPort(int port);
+    int   getPort();
+    void  setPort(int port);
     char* getSsid();
-    void setSsid(char* ssid);
+    void  setSsid(char* ssid);
     char* getPasswd();
-    void setPasswd(char* passwd);
+    void  setPasswd(char* passwd);
 
     // Methodes internes
     void initWifi();
@@ -26,7 +26,7 @@ class WebServer{
   private:
     char* _ssid   = "";
     char* _passwd = "";
-    int         _port   = WEBSERVER_PORT;
+    int   _port   = WEBSERVER_PORT;
     WiFiServer  _server;
 };
 
