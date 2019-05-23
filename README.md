@@ -19,7 +19,6 @@ Contrôle de qualité de l'air Géo-localisée.
     - Après avoir choisir le module et la bibliothèque: appliquer algorithme itératif en prenant comme point d'origine, le point donné par le module
   - Faire structure de donnée pour Qualité de l'Air / coordonnées (/ autres data ?)
   - Faire Interface Web pour avoir les informations (+ requète geocoding ?)
-  - Objectify: Faire de l'Orienté Objet (et non plus du procédural)
   - passer sous esp-idf (et assigner un core au WiFi et un core aux périphériques)
   - Faire interface AccessPoint pour première connexion
   - Stockage des points + les placer sur OpenStreetMap
