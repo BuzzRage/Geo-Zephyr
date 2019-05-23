@@ -12,11 +12,16 @@
 	#define DEBUG_WRITE(a)
 #endif
 
-#define SERIAL_SPEED 		      9600
 #define WIFI_ENABLED
-#ifdef WIFI_ENABLED
-	#define WEBSERVER_PORT				80
-#endif
+#define GPS_ENABLED
+#define BME_ENABLED
+
+
+#define SERIAL_SPEED 		      9600
+#define WEBSERVER_PORT				80
+#define SEALEVELPRESSURE_HPA  1013.25
+
+
 /* ---------- Defines peripheral pins ------------------------ */
 // Air Quality control
 #define BME_VCC               3V3   // 3.3v
@@ -30,9 +35,5 @@
 #define GPS_GND								GND
 #define GPS_TX								16
 #define GPS_RX								17
-
-
-#define SEALEVELPRESSURE_HPA  1013.25
-
 
 #endif
