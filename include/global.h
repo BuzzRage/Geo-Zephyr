@@ -13,8 +13,8 @@
 #endif
 
 #define WIFI_ENABLED
-#define GPS_ENABLED
-#define BME_ENABLED
+#define  GPS_ENABLED
+#define AIRQ_ENABLED
 
 
 #define SERIAL_SPEED 		      9600
