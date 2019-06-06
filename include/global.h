@@ -12,12 +12,12 @@
 	#define DEBUG_WRITE(a)
 #endif
 
-#define WIFI_ENABLED
+//#define WIFI_ENABLED
 #define  GPS_ENABLED
-#define AIRQ_ENABLED
+//#define AIRQ_ENABLED
 
 
-#define SERIAL_SPEED 		      9600
+#define SERIAL_SPEED 		      115200
 #define WEBSERVER_PORT				80
 #define SEALEVELPRESSURE_HPA  1013.25
 
@@ -35,5 +35,6 @@
 #define GPS_GND								GND
 #define GPS_TX								16
 #define GPS_RX								17
+#define GPS_BAUD							9600
 
 #endif

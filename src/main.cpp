@@ -32,10 +32,10 @@ void setup(){
   #ifdef GPS_ENABLED
     GPS.init();
   #endif
+
 }
 
 void loop() {
-  //delay(2000);
 
   #ifdef AIRQ_ENABLED
     airSensor.test();

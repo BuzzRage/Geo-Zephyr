@@ -1,7 +1,7 @@
 #ifndef GPSHANDLER_H
 #define GPSHANDLER_H
 
-#include <Adafruit_GPS.h>
+#include <TinyGPS++.h>
 #include <Arduino.h>
 #include "global.h"
 
@@ -17,9 +17,10 @@ class GZ_GPS{
     // Methodes internes
     void init();
     void test();
+    void displayInfo();
 
   private:
-    Adafruit_GPS* _GPS;
+    TinyGPSPlus*  _GPS;
     uint32_t      _timer;
 };
 
