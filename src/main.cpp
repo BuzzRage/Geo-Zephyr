@@ -1,11 +1,6 @@
 #include <Arduino.h>
 #include "global.h"
 
-#ifdef WIFI_ENABLED
-  #include "wifiHandler.h"
-  GZ_WebServer webServer("ssid","password");
-#endif
-
 #ifdef GPS_ENABLED
   #include "gpsHandler.h"
   GZ_GPS GPS;
@@ -16,6 +11,10 @@
   GZ_AirSensor airSensor;
 #endif
 
+#if defined WIFI_ENABLED && defined GPS_ENABLED && defined AIRQ_ENABLED
+  #include "wifiHandler.h"
+  GZ_WebServer webServer("Musicmen","Kafe!nay", &airSensor, &GPS);
+#endif
 
 String get_CSV_data(){
   String gpsInfos = GPS.getInfos();
@@ -56,18 +55,6 @@ void loop() {
   #endif
 
   #ifdef WIFI_ENABLED
-    String str = "<!DOCTYPE html><html> \
-    <head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8' /></head> \
-    <body> \
-      <h1>GeoZéphyr</h1> \
-      <p>Bienvenu sur cette page !</p> \
-      <p>Il fait "+String(airSensor.getTemperature())+"°C</p> \
-      <p>La pression atmosphérique est de "+String(airSensor.getPressure() / 100.0)+"hPa \
-         avec un taux de "+String(airSensor.getHumidity())+"%</p> \
-      <p>Gaz = "+String(airSensor.getGas_resistance()/1000)+"kOhms</p> \
-      <p>CSV entry = "+get_CSV_data()+"\
-    </body> \
-    </html>";
-    webServer.run(str);
+    webServer.run();
   #endif
 }
