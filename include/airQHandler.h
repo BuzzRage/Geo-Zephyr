@@ -18,7 +18,8 @@ class GZ_AirSensor{
 
     // Methodes internes
     void init();
-    void test();
+    void printReadings();
+    String getInfos();
 
   private:
     Adafruit_BME680 _airSensor;

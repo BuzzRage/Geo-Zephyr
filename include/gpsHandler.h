@@ -17,7 +17,7 @@ class GZ_GPS{
     // Methodes internes
     void init();
     void test();
-    void displayInfo();
+    String getInfos();
 
   private:
     TinyGPSPlus*  _GPS;

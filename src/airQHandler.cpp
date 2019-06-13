@@ -5,27 +5,27 @@ GZ_AirSensor::GZ_AirSensor(){
 }
 
 float GZ_AirSensor::getTemperature(){
-  return _airSensor.temperature;
+  return _airSensor.readTemperature();
 }
 
 uint32_t GZ_AirSensor::getPressure(){
-  return _airSensor.pressure;
+  return _airSensor.readPressure();
 }
 
 float GZ_AirSensor::getHumidity(){
-  return _airSensor.humidity;
+  return _airSensor.readHumidity();
 }
 
 
 uint32_t GZ_AirSensor::getGas_resistance(){
-  return _airSensor.gas_resistance;
+  return _airSensor.readGas();
 }
 
 void GZ_AirSensor::init(){
-  Serial.println("Air quality sensor initialization.");
+  DEBUG_PRINTLN("Air quality sensor initialization.");
 
   if (!_airSensor.begin(I2C_ADDR)) {
-    Serial.println("Could not find a valid BME680 sensor, check wiring!");
+    DEBUG_PRINTLN("Could not find a valid BME680 sensor, check wiring!");
     while (1);
   }
   // Set up oversampling and filter initialization
@@ -36,30 +36,43 @@ void GZ_AirSensor::init(){
   _airSensor.setGasHeater(320, 150); // 320*C for 150 ms
 }
 
-void GZ_AirSensor::test(){
+void GZ_AirSensor::printReadings(){
   if (! _airSensor.performReading()) {
-   Serial.println("Failed to perform reading :(");
+   DEBUG_PRINTLN("Failed to perform reading :(");
    return;
  }
- Serial.print("Temperature = ");
- Serial.print(_airSensor.temperature);
- Serial.println(" *C");
+ DEBUG_PRINT("Temperature = ");
+ DEBUG_PRINT(_airSensor.temperature);
+ DEBUG_PRINTLN(" *C");
 
- Serial.print("Pressure = ");
- Serial.print(_airSensor.pressure / 100.0);
- Serial.println(" hPa");
+ DEBUG_PRINT("Pressure = ");
+ DEBUG_PRINT(_airSensor.pressure / 100.0);
+ DEBUG_PRINTLN(" hPa");
 
- Serial.print("Humidity = ");
- Serial.print(_airSensor.humidity);
- Serial.println(" %");
+ DEBUG_PRINT("Humidity = ");
+ DEBUG_PRINT(_airSensor.humidity);
+ DEBUG_PRINTLN(" %");
 
- Serial.print("Gas = ");
- Serial.print(_airSensor.gas_resistance / 1000.0);
- Serial.println(" KOhms");
+ DEBUG_PRINT("Gas = ");
+ DEBUG_PRINT(_airSensor.gas_resistance / 1000.0);
+ DEBUG_PRINTLN(" KOhms");
 
- Serial.print("Approx. Altitude = ");
- Serial.print(_airSensor.readAltitude(SEALEVELPRESSURE_HPA));
- Serial.println(" m");
+ DEBUG_PRINT("Approx. Altitude = ");
+ DEBUG_PRINT(_airSensor.readAltitude(SEALEVELPRESSURE_HPA));
+ DEBUG_PRINTLN(" m");
 
- Serial.println();
+}
+
+String GZ_AirSensor::getInfos(){
+  if (! _airSensor.performReading()) {
+   return "0";
+  }
+
+  String dataString = "";
+  dataString += String(_airSensor.temperature) + ",";
+  dataString += String(_airSensor.pressure / 100.0) + ",";
+  dataString += String(_airSensor.humidity) + ",";
+  dataString += String(_airSensor.gas_resistance / 1000.0) + ",";
+  dataString += String(_airSensor.readAltitude(SEALEVELPRESSURE_HPA));
+  return dataString;
 }

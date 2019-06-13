@@ -38,7 +38,7 @@ void setup(){
 void loop() {
 
   #ifdef AIRQ_ENABLED
-    airSensor.test();
+    airSensor.printReadings();
   #endif
 
   #ifdef GPS_ENABLED

@@ -23,7 +23,7 @@ void GZ_GPS::init(){
 void GZ_GPS::test(){
   while(GPSSerial.available() > 0)
     if(_GPS->encode(GPSSerial.read())){
-      displayInfo();
+      Serial.println("data: " + getInfos());
     }
 
   if (millis() > 5000 && _GPS->charsProcessed() < 10){
@@ -32,11 +32,12 @@ void GZ_GPS::test(){
   }
 }
 
-void GZ_GPS::displayInfo(){
+String GZ_GPS::getInfos(){
   String dataString = "";
-  dataString += (_GPS->date.isValid() ? String(_GPS->date.day())+"/"+String(_GPS->date.month())+"/"+String(_GPS->date.year()) + ",": "null,");
 
-  if(_GPS->time.isValid()){
+  if(_GPS->date.isValid() && _GPS->time.isValid() && _GPS->location.isValid()){
+    dataString += String(_GPS->date.day())+"/"+String(_GPS->date.month())+"/"+String(_GPS->date.year()) + ",";
+
     int heure = _GPS->time.hour()+2;
     if (heure < 10)                 dataString += "0";
     dataString += String(heure) + ":";
@@ -44,13 +45,13 @@ void GZ_GPS::displayInfo(){
     dataString += String(_GPS->time.minute()) + ":";
     if (_GPS->time.second() < 10)     dataString += "0";
     dataString += String(_GPS->time.second());
-  }
-  else{
-    dataString += "null";
-  }
 
-  String lat = String(_GPS->location.lat(),6);
-  String lng = String(_GPS->location.lng(),6);
-  dataString += (_GPS->location.isValid() ? ","+lat+","+lng : ",null");
-  Serial.println("data: " + dataString);
+    String lat = String(_GPS->location.lat(),6);
+    String lng = String(_GPS->location.lng(),6);
+    dataString += ","+lat+","+lng;
+  }
+  else
+    dataString += "0";
+    
+  return dataString;
 }
