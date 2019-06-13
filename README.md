@@ -14,9 +14,9 @@ Contrôle de qualité de l'air Géo-localisée.
 - `TinyGPS++.h` [TinyGPS++](https://github.com/mikalhart/TinyGPSPlus "Lien GitHub pour la classe TinyGPS++")
 
 **TODO**:
-  - Régler le capteur *BME680*
-  - Faire structure de donnée pour Qualité de l'Air / coordonnées (/ autres data ?)
-  - Faire Interface Web pour avoir les informations (+ requète geocoding ?)
+  - Convertir les données du capteur *BME680* en IAQ
+  - Faire structure de donnée pour Qualité de l'Air / coordonnées (/ autres data ?): CSV ou JSON ?
   - Exportation les données en .csv (et .gpx ?)
+  - Résoudre le problème d'AJAX
   - passer sous esp-idf (et assigner un core au WiFi et un core aux périphériques)
   - Faire interface AccessPoint pour première connexion
