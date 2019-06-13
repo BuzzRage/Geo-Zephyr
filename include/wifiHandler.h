@@ -20,12 +20,13 @@ class GZ_WebServer{
     GZ_WebServer(char* ssid, char* passwd, GZ_AirSensor* airSensor, GZ_GPS* gps);
 
     // Accesseurs
-    int   getPort();
-    void  setPort(int port);
-    char* getSsid();
-    void  setSsid(char* ssid);
-    char* getPasswd();
-    void  setPasswd(char* passwd);
+    int    getPort();
+    void   setPort(int port);
+    char*  getSsid();
+    void   setSsid(char* ssid);
+    char*  getPasswd();
+    void   setPasswd(char* passwd);
+    String get_CSV_data();
 
     // Methodes internes
     void initWifi();

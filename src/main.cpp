@@ -16,16 +16,6 @@
   GZ_WebServer webServer("Musicmen","Kafe!nay", &airSensor, &GPS);
 #endif
 
-String get_CSV_data(){
-  String gpsInfos = GPS.getInfos();
-  String bmeInfos = airSensor.getInfos();
-  if(bmeInfos != "0" and gpsInfos != "0")
-    return gpsInfos + "," + bmeInfos;
-  else
-    return "0";
-}
-
-
 void setup(){
   Serial.begin(SERIAL_SPEED);
 
