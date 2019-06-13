@@ -17,6 +17,16 @@
 #endif
 
 
+String get_CSV_data(){
+  String gpsInfos = GPS.getInfos();
+  String bmeInfos = airSensor.getInfos();
+  if(bmeInfos != "0" and gpsInfos != "0")
+    return gpsInfos + "," + bmeInfos;
+  else
+    return "0";
+}
+
+
 void setup(){
   Serial.begin(SERIAL_SPEED);
 
@@ -47,7 +57,7 @@ void loop() {
 
   #ifdef WIFI_ENABLED
     String str = "<!DOCTYPE html><html> \
-    <head></head> \
+    <head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8' /></head> \
     <body> \
       <h1>GeoZéphyr</h1> \
       <p>Bienvenu sur cette page !</p> \
@@ -55,6 +65,7 @@ void loop() {
       <p>La pression atmosphérique est de "+String(airSensor.getPressure() / 100.0)+"hPa \
          avec un taux de "+String(airSensor.getHumidity())+"%</p> \
       <p>Gaz = "+String(airSensor.getGas_resistance()/1000)+"kOhms</p> \
+      <p>CSV entry = "+get_CSV_data()+"\
     </body> \
     </html>";
     webServer.run(str);
