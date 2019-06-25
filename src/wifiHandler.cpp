@@ -28,9 +28,9 @@ void GZ_WebServer::initWifi(){
 }
 
 void GZ_WebServer::begin(){
-  _server.on("/"                    ,std::bind(&GZ_WebServer::handleRoot, this));
-  _server.on("/refreshData.js"      ,std::bind(&GZ_WebServer::handleJS,   this));
   _server.on("/sensors.json"        ,std::bind(&GZ_WebServer::handleJSON, this));
+
+  _server.onNotFound(                std::bind(&GZ_WebServer::handleRoot, this));
   _server.begin(_port);
 }
 
@@ -38,94 +38,49 @@ void GZ_WebServer::run(){
     _server.handleClient();
 }
 
+bool GZ_WebServer::loadFromMemoryCard(String path) {
+  String mediaType = "text/plain";
+  path = ROOT_PATH + path;
+  Serial.println(path);
+  if (path.endsWith("/")) path += "index.html";
+
+  if (path.endsWith(".html"))       mediaType = "text/html";
+  else if (path.endsWith(".css"))   mediaType = "text/css";
+  else if (path.endsWith(".js"))    mediaType = "application/javascript";
+  else if (path.endsWith(".png"))   mediaType = "image/png";
+
+  String minPath = path.substring(0, path.lastIndexOf("."))+".min"+path.substring(path.lastIndexOf("."), path.length());
+
+  if (_sdCard.fileExists(minPath)){
+    path=minPath;
+  }
+
+
+  if (_sdCard.fileExists(path)) {
+    String file = _sdCard.readFile(path);
+    if (file != "") {
+      _server.send(200, mediaType, file);
+      return true;
+    }
+  }
+
+  _server.send(404, "text/plain", "File not Found.");
+  return false;
+}
+
 void GZ_WebServer::handleRoot(){
-  String str = "<!DOCTYPE html><html> \
-  <head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8' /> \
-  <style>body { text-align: center; font-family: \"Trebuchet MS\", Arial;} \
-            table { border-collapse: collapse; width:35%; margin-left:auto; margin-right:auto; } \
-            th { padding: 12px; background-color: #af4300; color: white; } \
-            tr { border: 1px solid #ddd; padding: 12px; } \
-            tr:hover { background-color: #bcbcbc; } \
-            td { border: none; padding: 12px; } </style></head> \
-  <body> \
-    <h1>GeoZéphyr</h1> \
-    <table> \
-      <tr> \
-        <th>Mesure</th> \
-        <th>Valeur</th> \
-      </tr> \
-      <tr> \
-        <td>Température</td> \
-        <td><div id='temperature'>"+String(_airSensor->getTemperature())+"</div>°C</td> \
-      </tr> \
-      <tr> \
-        <td>Pression atmosphérique</td> \
-        <td><div id='pressure'>"+String(_airSensor->getPressure()/100)+"</div>hPa</td> \
-      </tr> \
-      <tr> \
-        <td>Taux d'humidité</td> \
-        <td><div id='humidity'>"+String(_airSensor->getHumidity())+"</div>%</td> \
-      </tr> \
-      <tr> \
-        <td>Résistance gaz</td> \
-        <td><div id='gas'>"+String(_airSensor->getGas_resistance()/1000)+"</div>kOhms</td> \
-      </tr> \
-    </table> \
-    <p>CSV header = Date, Time, Latitue, Longitude, Temperature, Pressure, Humidity, Gas Resistance</p> \
-    <p>CSV entry = <div id='csventry'>"+get_CSV_data()+"</div></p> \
-    <script> \
-      function loadScript(){ \n \
-  			var script = document.createElement('script'); \n \
-  			script.type = 'text/javascript'; \n \
-      	script.src = 'refreshData.js'; \n \
-      	document.getElementsByTagName('head')[0].appendChild(script); \n \
-      } \n \
-      setTimeout('loadScript()',1000); \n \
-    </script> \
-  </body> \
-  </html>";
-  _server.send(200, "text/html", str);
+  if (!_sdCard.begin(SD_CS)) {
+    DEBUG_PRINTLN("SD Card could not begin");
+    _server.send(404, "text/plain", "SD Card Not Found.");
+    return;
+  }
+
+  if ( !loadFromMemoryCard(_server.uri()) ) {
+    _server.send(404, "Page Not Found.");
+  }
 }
 
-void GZ_WebServer::handleJS(){
-  String str = "var xmlHttp=createXmlHttpObject(); \
-      var initDone = 0; \
-      setTimeout('process()', 500); \
-      function createXmlHttpObject(){ \
-      	if(window.XMLHttpRequest){ \
-      		xmlHttp=new XMLHttpRequest(); \
-      	}else{ \
-      		xmlHttp=new ActiveXObject('Microsoft.XMLHTTP'); \
-      	} \
-      	return xmlHttp; \
-      } \
-      function process(){ \
-      	if(xmlHttp.readyState==0 || xmlHttp.readyState==4){ \
-      		xmlHttp.open('GET','/sensors.json',true); \
-      		xmlHttp.onreadystatechange=handleServerResponse; \
-      		xmlHttp.send(null); \
-      		initDone = 1; \
-      	} \
-      	if(initDone == 0) { \
-      		setTimeout('process()',1000); \
-      	} \
-      } \
-      function handleServerResponse(){ \
-      	if(xmlHttp.readyState==4 && xmlHttp.status==200) \
-      	{ \
-      		ans =xmlHttp.responseXML; \
-      		pressure 		= ans.getElementsByTagName('pressure')[0].firstChild.nodeValue; \
-      		temperature = ans.getElementsByTagName('temperature')[0].firstChild.nodeValue; \
-      		humidity		= ans.getElementsByTagName('humidity')[0].firstChild.nodeValue; \
-      		gas				  = ans.getElementsByTagName('gas')[0].firstChild.nodeValue; \
-      		document.getElementById('pressure').innerHTML = pressure; \
-      		document.getElementById('temperature').innerHTML = temperature; \
-      		document.getElementById('humidity').innerHTML = humidity; \
-      		document.getElementById('gas').innerHTML = gas; \
-      	} }";
-  _server.send(200, "text/javascript", str);
-}
-
+// TODO: Rajouter valeurs GPS
 void GZ_WebServer::handleJSON(){
   DEBUG_PRINTLN("JSON Requested.");
 
@@ -134,7 +89,7 @@ void GZ_WebServer::handleJSON(){
   JSON += "\"temperature\":" + String(_airSensor->getTemperature())     +",";
   JSON += "\"pressure\":"    + String(_airSensor->getPressure())        +",";
   JSON += "\"humidity\":"    + String(_airSensor->getHumidity())       +",";
-  JSON += "\"gas\":"         + String(_airSensor->getGas_resistance()) +",";
+  JSON += "\"gas\":"         + String(_airSensor->getGas_resistance());
   JSON += "}";
 
   DEBUG_PRINTLN("JSON: "+JSON);

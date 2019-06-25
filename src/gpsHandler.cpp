@@ -23,7 +23,7 @@ void GZ_GPS::init(){
 void GZ_GPS::test(){
   while(GPSSerial.available() > 0)
     if(_GPS->encode(GPSSerial.read())){
-      Serial.println("data: " + getInfos());
+      //Serial.println("data: " + getInfos());
     }
 
   if (millis() > 5000 && _GPS->charsProcessed() < 10){
@@ -52,6 +52,6 @@ String GZ_GPS::getInfos(){
   }
   else
     dataString += "0";
-    
+
   return dataString;
 }

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+		<style>
+body{text-align:center;font-family:\"Trebuchet MS\",Arial;background-color:#999}table{border-collapse:collapse;width:35%;margin-left:auto;margin-right:auto}th{padding:12px;background-color:#af4300;color:white}tr{border:1px solid #ddd;padding:12px}tr:hover{background-color:#bcbcbc}td{border:none;padding:12px;background-color:#ffa}
+    </style>
+    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+  </head>
+
+  <body>
+    <h1>GeoZéphyr</h1>
+
+    <table>
+      <tr>
+        <th>Mesure</th>
+        <th>Valeur</th>
+      </tr>
+      <tr>
+        <td>Température</td>
+        <td><div id='temperature'></div>°C</td>
+      </tr>
+      <tr>
+        <td>Pression atmosphérique</td>
+        <td><div id='pressure'></div>hPa</td>
+      </tr>
+      <tr>
+        <td>Taux d'humidité</td>
+        <td><div id='humidity'></div>%</td>
+      </tr>
+      <tr>
+        <td>Résistance gaz</td>
+        <td><div id='gas'></div>kOhms</td>
+      </tr>
+    </table>
+
+    <p>CSV header = Date, Time, Latitue, Longitude, Temperature, Pressure, Humidity, Gas Resistance</p>
+    <p>CSV entry = <div id='csventry'></div></p>
+
+    <script>
+      function loadScript(url, callback=function(){}){
+  		var script = document.createElement('script');
+  		script.type = 'application/javascript';
+
+  		script.onload = function(){
+    				callback();
+    	};
+
+      	script.src = url;
+      	document.getElementsByTagName('head')[0].appendChild(script);
+      }
+      setTimeout(loadScript, 1000, 'refreshData.js');
+    </script>
+  </body>
+</html>

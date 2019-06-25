@@ -1,0 +1,6 @@
+body { text-align: center; font-family: \"Trebuchet MS\", Arial;background-color:#999}
+table { border-collapse: collapse; width:35%; margin-left:auto; margin-right:auto; }
+th { padding: 12px; background-color: #af4300; color: white; }
+tr { border: 1px solid #ddd; padding: 12px; }
+tr:hover { background-color: #bcbcbc; }
+td { border: none; padding: 12px; background-color:#ffa;}

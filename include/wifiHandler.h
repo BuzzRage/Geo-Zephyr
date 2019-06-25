@@ -7,6 +7,7 @@
 
 #include "airQHandler.h"
 #include "gpsHandler.h"
+#include "memoryHandler.h"
 
 // Forward Declarations
 class GZ_AirSensor;
@@ -30,8 +31,8 @@ class GZ_WebServer{
 
     // Methodes internes
     void initWifi();
+    bool loadFromMemoryCard(String path);
     void handleRoot();
-    void handleJS();
     void handleJSON();
     void begin();
     void run();
@@ -39,6 +40,7 @@ class GZ_WebServer{
   private:
     GZ_AirSensor* _airSensor;
     GZ_GPS*       _gps;
+    GZ_SDCard     _sdCard;
 
     char* _ssid   = "";
     char* _passwd = "";

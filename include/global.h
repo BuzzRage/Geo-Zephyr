@@ -1,7 +1,7 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-#define DEBUG_DISPLAY
+//#define DEBUG_DISPLAY
 #ifdef DEBUG_DISPLAY
 	#define DEBUG_PRINTLN(a) 	Serial.println(a)
 	#define DEBUG_PRINT(a) 		Serial.print(a)
@@ -12,9 +12,9 @@
 	#define DEBUG_WRITE(a)
 #endif
 
-//#define WIFI_ENABLED
+#define WIFI_ENABLED
 #define  GPS_ENABLED
-//#define AIRQ_ENABLED
+#define AIRQ_ENABLED
 
 
 #define SERIAL_SPEED 		      115200
@@ -36,5 +36,12 @@
 #define GPS_TX								16
 #define GPS_RX								17
 #define GPS_BAUD							9600
+
+// SD
+#define SD_SCK                SS
+#define SD_MISO               MISO
+#define SD_MOSI               MOSI
+#define SD_CS 								4
+#define ROOT_PATH							"/GeoZephyr"
 
 #endif
