@@ -81,7 +81,7 @@ void GZ_WebServer::handleRoot(){
   }
 }
 
-// TODO: Rajouter valeurs GPS
+
 void GZ_WebServer::handleJSON(){
   DEBUG_PRINTLN("JSON Requested.");
 
