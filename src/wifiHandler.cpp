@@ -45,9 +45,13 @@ bool GZ_WebServer::loadFromMemoryCard(String path) {
 
   if (path.endsWith(".html"))       mediaType = "text/html";
   else if (path.endsWith(".css"))   mediaType = "text/css";
-  else if (path.endsWith(".csv"))   mediaType = "text/csv";
   else if (path.endsWith(".js"))    mediaType = "application/javascript";
   else if (path.endsWith(".png"))   mediaType = "image/png";
+  else if (path.endsWith(".csv")){
+       mediaType = "text/csv";
+       _server.sendHeader("Content-Disposition", "attachment;filename=data.csv");
+  }
+
 
   String minPath = path.substring(0, path.lastIndexOf("."))+".min"+path.substring(path.lastIndexOf("."), path.length());
 
