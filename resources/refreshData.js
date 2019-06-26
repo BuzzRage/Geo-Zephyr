@@ -1,5 +1,5 @@
 var req= new XMLHttpRequest();
-setTimeout(process, 500);
+setTimeout(process, 800);
 
 function process(){
   if(req.readyState==0 || req.readyState==4){
@@ -7,6 +7,7 @@ function process(){
     req.onreadystatechange=handleServerResponse;
     req.send(null);
   }
+  setTimeout(process,1000);
 }
 
 function handleServerResponse(){
@@ -16,6 +17,5 @@ function handleServerResponse(){
     document.getElementById('temperature').innerHTML = ans.temperature;
     document.getElementById('humidity').innerHTML = ans.humidity;
     document.getElementById('gas').innerHTML = ans.gas;
-    setTimeout(process,1000);
   }
 }
