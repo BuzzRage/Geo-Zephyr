@@ -38,7 +38,7 @@ float GZ_AirSensor::getAirQScore(){
   if (gas_reference > gas_upper_limit)    gas_reference = gas_upper_limit;
   if (gas_reference < gas_lower_limit)    gas_reference = gas_lower_limit;
 
-  gas_score = (0.75/(gas_upper_limit-gas_lower_limit)*gas_reference - (gas_lower_limit*(0.75/(gas_upper_limit-gas_lower_limit))))*100;
+  gas_score = (0.75/(gas_upper_limit-gas_lower_limit))*(gas_reference - gas_lower_limit)*100;
 
   airQ_score = hum_score + gas_score;
   return airQ_score;
@@ -116,7 +116,7 @@ String GZ_AirSensor::getInfos(){
   dataString += String(_airSensor.humidity) + ",";
   dataString += String(_airSensor.gas_resistance / 1000.0) + ",";
   dataString += String(getAirQScore()) + ",";
-  dataString += String(getIAQ(airQ_score)) + ",";
+  dataString += getIAQ(airQ_score) + ",";
   dataString += String(_airSensor.readAltitude(SEALEVELPRESSURE_HPA));
   return dataString;
 }
