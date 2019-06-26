@@ -29,7 +29,6 @@ void GZ_WebServer::initWifi(){
 
 void GZ_WebServer::begin(){
   _server.on("/sensors.json"        ,std::bind(&GZ_WebServer::handleJSON, this));
-
   _server.onNotFound(                std::bind(&GZ_WebServer::handleRoot, this));
   _server.begin(_port);
 }
@@ -41,7 +40,7 @@ void GZ_WebServer::run(){
 bool GZ_WebServer::loadFromMemoryCard(String path) {
   String mediaType = "text/plain";
   path = ROOT_PATH + path;
-  Serial.println(path);
+
   if (path.endsWith("/")) path += "index.html";
 
   if (path.endsWith(".html"))       mediaType = "text/html";
@@ -91,7 +90,7 @@ void GZ_WebServer::handleJSON(){
   JSON += "\"pressure\":"    + String(_airSensor->getPressure())        +",";
   JSON += "\"humidity\":"    + String(_airSensor->getHumidity())        +",";
   JSON += "\"gas\":"         + String(_airSensor->getGas_resistance())  +",";
-  JSON += "\"csventry\":\""  + String(get_CSV_data())                   +"\"";
+  JSON += "\"csventry\":\""  + get_CSV_data()                   +"\"";
   JSON += "}";
 
   DEBUG_PRINTLN("JSON: "+JSON);
