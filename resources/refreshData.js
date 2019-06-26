@@ -1,5 +1,5 @@
 var req= new XMLHttpRequest();
-setTimeout(process, 800);
+setTimeout(process, 1000);
 
 function process(){
   if(req.readyState==0 || req.readyState==4){
@@ -7,7 +7,7 @@ function process(){
     req.onreadystatechange=handleServerResponse;
     req.send(null);
   }
-  setTimeout(process,1000);
+  setTimeout(process,5000);
 }
 
 function handleServerResponse(){
