@@ -17,5 +17,13 @@ function handleServerResponse(){
     document.getElementById('temperature').innerHTML = ans.temperature;
     document.getElementById('humidity').innerHTML = ans.humidity;
     document.getElementById('gas').innerHTML = ans.gas;
+    document.getElementById('csventry').innerHTML = ans.csventry;
+  }
+}
+
+function getCSV(){
+  if(req.readyState==0 || req.readyState==4){
+    req.open('GET','/data.csv',true);
+    req.send(null);
   }
 }

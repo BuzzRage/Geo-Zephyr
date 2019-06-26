@@ -46,6 +46,7 @@ bool GZ_WebServer::loadFromMemoryCard(String path) {
 
   if (path.endsWith(".html"))       mediaType = "text/html";
   else if (path.endsWith(".css"))   mediaType = "text/css";
+  else if (path.endsWith(".csv"))   mediaType = "text/csv";
   else if (path.endsWith(".js"))    mediaType = "application/javascript";
   else if (path.endsWith(".png"))   mediaType = "image/png";
 
@@ -88,8 +89,9 @@ void GZ_WebServer::handleJSON(){
   JSON += "{";
   JSON += "\"temperature\":" + String(_airSensor->getTemperature())     +",";
   JSON += "\"pressure\":"    + String(_airSensor->getPressure())        +",";
-  JSON += "\"humidity\":"    + String(_airSensor->getHumidity())       +",";
-  JSON += "\"gas\":"         + String(_airSensor->getGas_resistance());
+  JSON += "\"humidity\":"    + String(_airSensor->getHumidity())        +",";
+  JSON += "\"gas\":"         + String(_airSensor->getGas_resistance())  +",";
+  JSON += "\"csventry\":\""  + String(get_CSV_data())                   +"\"";
   JSON += "}";
 
   DEBUG_PRINTLN("JSON: "+JSON);
@@ -127,4 +129,8 @@ String GZ_WebServer::get_CSV_data(){
     return gpsInfos + "," + bmeInfos;
   else
     return "0";
+}
+
+void GZ_WebServer::write_CSV_entry(){
+  _sdCard.writeFile(String(ROOT_PATH)+"/data.csv", get_CSV_data());
 }

@@ -28,6 +28,7 @@ class GZ_WebServer{
     char*  getPasswd();
     void   setPasswd(char* passwd);
     String get_CSV_data();
+    void write_CSV_entry();
 
     // Methodes internes
     void initWifi();

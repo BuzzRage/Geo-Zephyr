@@ -16,6 +16,8 @@
   GZ_WebServer webServer("Musicmen","Kafe!nay", &airSensor, &GPS);
 #endif
 
+uint32_t timestamp = 0;
+
 void setup(){
   Serial.begin(SERIAL_SPEED);
 
@@ -37,14 +39,19 @@ void setup(){
 void loop() {
 
   #ifdef AIRQ_ENABLED
-    airSensor.printReadings();
+    airSensor.performReading();
   #endif
 
   #ifdef GPS_ENABLED
-    GPS.test();
+    GPS.run();
   #endif
 
   #ifdef WIFI_ENABLED
     webServer.run();
   #endif
+
+  if(millis() - timestamp > 1000){
+    webServer.write_CSV_entry();
+    timestamp = millis();
+  }
 }
