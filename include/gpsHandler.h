@@ -16,7 +16,7 @@ class GZ_GPS{
 
     // Methodes internes
     void init();
-    void test();
+    void run();
     String getInfos();
 
   private:

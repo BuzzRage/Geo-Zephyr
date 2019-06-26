@@ -20,7 +20,7 @@ void GZ_GPS::init(){
   GPSSerial.begin(GPS_BAUD);
 }
 
-void GZ_GPS::test(){
+void GZ_GPS::run(){
   while(GPSSerial.available() > 0)
     if(_GPS->encode(GPSSerial.read())){
       //Serial.println("data: " + getInfos());
